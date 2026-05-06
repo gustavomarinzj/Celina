@@ -25,13 +25,13 @@ try {
 
 ?>
 
-<p>	<a href="home.php">Home</a> </p>
+<p><a href="home.php">Home</a></p>
 
 <h2>Gestión de usuarios</h2>
 
 <hr>
 
-<p> <a href="registrar-usuario.php">Nuevo Usuario</a> </p>
+<p><a href="registrar-usuario.php"><button>Nuevo Usuario</button></a></p>
 
 <?php if (isset($error_message)): ?>
   <p class="problema"><?php echo $errors['database']; ?></p>
@@ -56,8 +56,8 @@ try {
 					<td><?= htmlspecialchars($usuario['username']); ?></td>
 					<td><?= htmlspecialchars($usuario['rol']); ?></td>
 					<td>
-						<a href="actualizar-usuario.php?id=<?= $usuario['id']; ?>">Actualizar</a> |
-						<a href="borrar-usuario.php?id=<?= $usuario['id']; ?>">Borrar</a>
+						<a href="actualizar-usuario.php?id=<?= $usuario['id']; ?>"><button>Actualizar</button></a>
+						<a href="borrar-usuario.php?id=<?= $usuario['id']; ?>"><button>Borrar</button></a>
 					</td>
 				</tr>
 			<?php endforeach; ?>

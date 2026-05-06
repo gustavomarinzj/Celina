@@ -12,6 +12,8 @@ include_once 'templates/header.php'
 
 <hr>
 
+
+
 <div class="alert info">
 Lorem ipsum dolor sit amet consectetur adipiscing elit. Consectetur adipiscing elit quisque faucibus ex sapien vitae. Ex sapien vitae pellentesque sem placerat in id. Placerat in id cursus mi pretium tellus duis. Pretium tellus duis convallis tempus leo eu aenean.
 </div>

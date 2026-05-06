@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <p> <a href="home.php">Home</a> | <a href="gestion-usuario.php">Gestión de Usuarios</a> </p>
 
-<h2>Registrar Usuario</h2>
+<h2>Nuevo Usuario</h2>
 
 <hr>
 
