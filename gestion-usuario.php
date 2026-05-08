@@ -24,12 +24,7 @@ try {
 
 
 ?>
-
-<p><a href="home.php">Home</a></p>
-
 <h2>Gestión de usuarios</h2>
-
-<hr>
 
 <p><a href="registrar-usuario.php"><button>Nuevo Usuario</button></a></p>
 
@@ -64,11 +59,5 @@ try {
 			</tbody>
 		</table>
 <?php endif; ?>
-
-<hr>
-<p>
-	Bienvenido(a), <?= htmlspecialchars($_SESSION['descripcion']) ?> |
-	<a href="logout.php">Cerrar sesión</a> 
-</p>
 
 <?php include_once 'templates/footer.php'; ?>

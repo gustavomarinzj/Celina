@@ -17,16 +17,4 @@
   
 </header>
 
-<nav>
-  <ul class="main-nav">
-    <li><a href="home.php">Home</a></li>
-
-    <li class="push">
-      <?php if ($_SESSION['rol'] == 'administrador'): ?>
-          <li><a href="gestion-usuario.php">Usuarios</a></li>
-      <?php endif; ?>
-    </li>
-  </ul>
-</nav>
-
 <hr>

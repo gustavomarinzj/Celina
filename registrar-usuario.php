@@ -76,11 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
-<p> <a href="home.php">Home</a> | <a href="gestion-usuario.php">Gestión de Usuarios</a> </p>
-
 <h2>Nuevo Usuario</h2>
-
-<hr>
 
 <?php if (!empty($success_message)): ?>
 	<p class="exito"><?php echo $success_message; ?></p>
@@ -121,12 +117,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	</p>
 
 </form>
-
-
-<hr>
-<p>
-	Bienvenido(a), <?= htmlspecialchars($_SESSION['descripcion']) ?> |
-	<a href="logout.php">Cerrar sesión</a> 
-</p>
 
 <?php include_once 'templates/footer.php'; ?>

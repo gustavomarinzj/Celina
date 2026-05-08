@@ -6,7 +6,7 @@ if (isset($_SESSION['logged_in'])) {
     exit;
   }
 
-include_once 'templates/header.php';
+include_once 'templates/iheader.php';
 include_once 'config/database.php';
 
 $database = new Database();
@@ -69,8 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <h2>Iniciar sesión</h2>
 
-<hr>
-
 <?php if (!empty($errors['database'])): ?>
   <p class="problema"><?php echo $errors['database']; ?></p>
 <?php endif; ?>
@@ -96,8 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<p>
 		<button type="submmit" name="btn_enviar">Enviar</button>
 	</p>
-
-
 </form>
 
-<?php include_once 'templates/footer.php'; ?>
+<?php include_once 'templates/ifooter.php'; ?>

@@ -3,6 +3,7 @@
   --b-focus: #61bfb6;
 }
 
+/* ENCABEZADO */
 header {
   /*background: #61bfb6; */
   color: white; 
@@ -10,6 +11,7 @@ header {
   text-align: center; 
 }
 
+/* ALERT BOXES */
 .alert {
     margin-bottom: 1.5rem;
     padding:.5rem .75rem;
@@ -62,10 +64,37 @@ header {
     border: 1px solid #6c757d;
 }
 
+/* TEXTO PARA VALIDAR INPUT TEXT */
+
 .problema {
-  color: #f8d7da;
+  color: #e04d5c;
 }
 
 .exito {
   color: #d4edda;
+}
+
+/* NAVBAR */
+
+.main-nav {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 1.2em;
+
+  display: flex;
+}
+
+.main-nav a {
+  padding: 0.5em 1em;
+  display: block;
+}
+
+.main-nav p {
+  padding: 0.5em 1em;
+  display: block;
+}
+
+.push {
+  margin-left: auto;
 }
