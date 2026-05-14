@@ -60,40 +60,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }        
       }
     } catch(PDOException $e) {
-        $errors['database'] = 'Login failed: ' . $e->getMessage();
+        $errors['database'] = 'Falló el inicio de sesión: ' . $e->getMessage();
     }
   }
 }
 
 ?>
 
-<h2>Iniciar sesión</h2>
+<div class="login">
 
-<?php if (!empty($errors['database'])): ?>
-  <p class="problema"><?php echo $errors['database']; ?></p>
-<?php endif; ?>
+  <h1 class="title">Celina</h1>
+  <h2 class="subtitle">Control de Asistencia</h2>
+  <hr>
+  <h4 class="title is-4">Iniciar Sesión</h4>
 
-<form method="POST" action="">
-	
-	<p>
-		<label for="usuario">Usuario</label>
-		<input type="text" name="txt_usuario" id="usuario" value="<?= htmlspecialchars($usuario) ?>">
-		<?php if (!empty($errors['usuario'])): ?>
-		  <small class="problema"><?php echo $errors['usuario']; ?></small>
-		<?php endif; ?>			
-	</p>
+  <?php if (!empty($errors['database'])): ?>
+    <p class="help is-danger"><?php echo $errors['database']; ?></p>
+  <?php endif; ?>
 
-	<p>
-		<label for="password">Password</label>
-		<input type="password" name="txt_password" id="password">
-		<?php if (!empty($errors['password'])): ?>
-		  <small class="problema"><?php echo $errors['password']; ?></small>
-		<?php endif; ?>			
-	</p>
+  <form method="POST" action="">
 
-	<p>
-		<button type="submmit" name="btn_enviar">Enviar</button>
-	</p>
-</form>
+  <div class="field">
+    <label class="label">Usuario</label>
+    <div class="control">
+      <input class="input has-background-link-05 <?= isset($errors['usuario']) ? 'is-danger' : ''; ?>" 
+        type="text" name="txt_usuario" value="<?= htmlspecialchars($usuario) ?>">
+    </div>
+    <?php if (!empty($errors['usuario'])): ?>
+      <p class="help is-danger"><?php echo $errors['usuario']; ?></p>
+    <?php endif; ?>
+  </div>
 
+  <div class="field">
+    <label class="label">Password</label>
+    <div class="control">
+      <input class="input has-background-link-05 <?= isset($errors['password']) ? 'is-danger' : ''; ?>" 
+        type="password" name="txt_password">
+    </div>
+    <?php if (!empty($errors['password'])): ?>
+      <p class="help is-danger"><?php echo $errors['password']; ?></p>
+    <?php endif; ?>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <button class="button is-block is-fullwidth is-link" type="submmit" name="btn_enviar">Enviar</button>
+    </div>
+  </div>
+
+  </form>
+</div>
 <?php include_once 'templates/ifooter.php'; ?>

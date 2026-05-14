@@ -1,12 +1,10 @@
-<hr>
+    </div>
+      <div class="column is-6"> </div>
+  </div>
 
-<nav>
-<ul class="main-nav">
-  <li><p><?= htmlspecialchars($_SESSION['descripcion']) ?></p></li>
-
-  <li class="push"><a href="logout.php">Cerrar sesión</a></li>
-</ul>
-</nav>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

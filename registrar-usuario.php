@@ -76,46 +76,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
-<h2>Nuevo Usuario</h2>
+<h4 class="title is-4">Nuevo Usuario</h4>
 
 <?php if (!empty($success_message)): ?>
-	<p class="exito"><?php echo $success_message; ?></p>
+	<p class="help is-danger"><?php echo $success_message; ?></p>
 <?php endif; ?>
 
 <?php if (!empty($errors['database'])): ?>
-  <p class="problema"><?php echo $errors['database']; ?></p>
+  <p class="help is-success"><?php echo $errors['database']; ?></p>
 <?php endif; ?>
 
 <form method="POST" action="">
 
-	<p>
-		<label for="descripcion">Descripción</label>
-		<input type="text" name="txt_descripcion" id="descripcion" value="<?= htmlspecialchars($descripcion) ?>">
+<div class="field">
+	<label class="label">Descripción</label>
+	<div class="control">
+		<input class="input" type="text" name="txt_descripcion" 
+			value="<?= htmlspecialchars($descripcion) ?>">
 		<?php if (!empty($errors['descripcion'])): ?>
-		  <small class="problema"><?php echo $errors['descripcion']; ?></small>
-		<?php endif; ?>
-	</p>
-
-	<p>
-		<label for="usuario">Nombre de Usuario</label>
-		<input type="text" name="txt_usuario" id="usuario" value="<?= htmlspecialchars($usuario) ?>">
-		<?php if (!empty($errors['usuario'])): ?>
-		  <small class="problema"><?php echo $errors['usuario']; ?></small>
+			<p class="help is-danger"><?php echo $errors['descripcion']; ?></p>
 		<?php endif; ?>		
-	</p>
+	</div>
+</div>
 
-	<p>
-		<label for="password">Password</label>
-		<input type="password" name="txt_password" id="password">
-		<?php if (!empty($errors['password'])): ?>
-		  <small class="problema"><?php echo $errors['password']; ?></small>
-		<?php endif; ?>		
-	</p>
+<div class="field">
+	<label class="label">Nombre de Usuario</label>
+	<input class="input" type="text" name="txt_usuario" value="<?= htmlspecialchars($usuario) ?>">
+	<?php if (!empty($errors['usuario'])): ?>
+		<p class="help is-danger"><?php echo $errors['usuario']; ?></p>
+	<?php endif; ?>		
+</div>
 
-	<p>
-		<button type="submmit" name="btn_enviar">Enviar</button>
-	</p>
+<div class="field">
+	<label class="label">Password</label>
+	<input class="input" type="password" name="txt_password">
+	<?php if (!empty($errors['password'])): ?>
+		<p class="help is-danger"><?php echo $errors['password']; ?></p>
+	<?php endif; ?>		
+</div>
 
+<div class="field">
+	<div class="control">
+		<button class="button is-link" type="submmit" name="btn_enviar">Enviar</button>
+	</div>
+</div>
+		
 </form>
 
 <?php include_once 'templates/footer.php'; ?>

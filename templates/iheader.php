@@ -5,16 +5,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Celina</title>
 
-	<link rel="stylesheet" href="css/bamboo.min.css" type="text/css">
+	<link rel="stylesheet" href="css/bulma.min.css" type="text/css">
 
 	<link rel="stylesheet" href="css/estilo.css" type="text/css">
 	
 </head>
 <body>
 
-<header>
-  <h1>Celina</h1>
-  
-</header>
-
-<hr>
+<section class="hero is-fullheight has-background-link-05">
+  <div class="hero-body">
