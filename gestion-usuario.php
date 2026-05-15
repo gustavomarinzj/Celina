@@ -13,7 +13,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 try {
-  $query = "SELECT id, descripcion, username, rol FROM usuario ORDER BY descripcion ASC";
+  $query = "SELECT id, descripcion, username, rol FROM usuario ORDER BY id ASC";
   $stmt = $db->prepare($query);
   $stmt->execute();
   $usuarios = $stmt->fetchAll();  
@@ -26,9 +26,9 @@ try {
 <h4 class="title is-4">Gestión de Usuarios</h4>
 
 <?php if (isset($error_message)): ?>
-  <p class="problema"><?php echo $errors['database']; ?></p>
+  <p class="has-text-danger"><?php echo $errors['database']; ?></p>
 <?php elseif (empty($usuarios)): ?>
-	<p class="alert warning">No hay registros</p>
+	<div class="notification is-info">No hay registros</div>
 <?php else: ?>
 <div class="table-container">
 	<table class="table">

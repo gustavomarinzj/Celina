@@ -8,6 +8,7 @@ if (!isset($_SESSION['logged_in'])) {
 
 include_once 'templates/header.php';
 include_once 'config/database.php';
+include_once 'config/funciones.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -18,6 +19,10 @@ $errors = [];
 $success_message = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if (!hash_equals($_SESSION['token_csrf'], $_POST['txt_csrf'])) {
+    // CSRF attack detected! Log this, redirect, or show an error.
+    die('CSRF token mismatch. Request denied.');		
+	}
 
 	$descripcion = trim($_POST['txt_descripcion']);
 	$usuario = trim($_POST['txt_usuario']);
@@ -68,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	      if ($stmt->execute()) {
 	          $success_message = '¡Registro exitoso!';
 	          $descripcion = $usuario = $password = $pwd_hashed = '';
+	          regenerar_token_csrf();
 	      }
 	  } catch(PDOException $exception) {
 	      $errors['database'] = 'Se produjo un error: ' . $exception->getMessage();
@@ -79,11 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <h4 class="title is-4">Nuevo Usuario</h4>
 
 <?php if (!empty($success_message)): ?>
-	<p class="help is-danger"><?php echo $success_message; ?></p>
+	<p class="has-text-success"><?php echo $success_message; ?></p>
 <?php endif; ?>
 
 <?php if (!empty($errors['database'])): ?>
-  <p class="help is-success"><?php echo $errors['database']; ?></p>
+  <p class="has-text-danger"><?php echo $errors['database']; ?></p>
 <?php endif; ?>
 
 <form method="POST" action="">
@@ -115,12 +121,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<?php endif; ?>		
 </div>
 
+<input type="hidden" name="txt_csrf" value="<?= htmlspecialchars($_SESSION['token_csrf']); ?>">
+
 <div class="field">
 	<div class="control">
 		<button class="button is-link" type="submmit" name="btn_enviar">Enviar</button>
 	</div>
 </div>
-		
+
 </form>
 
 <?php include_once 'templates/footer.php'; ?>

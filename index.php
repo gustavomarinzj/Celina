@@ -8,6 +8,7 @@ if (isset($_SESSION['logged_in'])) {
 
 include_once 'templates/iheader.php';
 include_once 'config/database.php';
+include_once 'config/funciones.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -55,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           $_SESSION['username'] = $user['username'];
           $_SESSION['rol'] = $user['rol'];
           $_SESSION['logged_in'] = true;
+          generar_token_csrf();
 
           header('location: home.php');
         }        
@@ -75,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <h4 class="title is-4">Iniciar Sesión</h4>
 
   <?php if (!empty($errors['database'])): ?>
-    <p class="help is-danger"><?php echo $errors['database']; ?></p>
+    <p class="has-text-danger"><?php echo $errors['database']; ?></p>
   <?php endif; ?>
 
   <form method="POST" action="">
