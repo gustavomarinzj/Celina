@@ -55,6 +55,3 @@
       </div>
     </div>
   </section>
-
-  <div class="columns">
-    <div class="column is-6">

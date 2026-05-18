@@ -21,14 +21,18 @@ $success_message = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!hash_equals($_SESSION['token_csrf'], $_POST['txt_csrf'])) {
     // CSRF attack detected! Log this, redirect, or show an error.
-    die('CSRF token mismatch. Request denied.');		
+			echo '<div class="notification is-warning">
+			  El <strong>token CSRF</strong> es invalido. Por favor intente reenviar el formulario.
+			</div>';
+
+    exit();		
 	}
 
 	$descripcion = trim($_POST['txt_descripcion']);
 	$usuario = trim($_POST['txt_usuario']);
 	$password = trim($_POST['txt_password']);
 
-  // Validar si está vacío
+  // Validar
   if (empty($descripcion)) {
       $errors['descripcion'] = 'Campo requerido';
   }
@@ -37,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
   if (empty($password)) {
       $errors['password'] = 'Campo requerido';
-  } elseif (strlen($password) < '8') {
-  		$errors['password'] = 'Debe tener ocho o más caracteres';
+  } elseif (!preg_match('/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,}$/', $password)) {
+  	$errors['password'] = 'Password no cumple con el formato';
   }
 
 	// Crea una clave de hash para una contraseña
@@ -82,6 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
+
+  <div class="columns">
+    <div class="column is-6">
+
 <h4 class="title is-4">Nuevo Usuario</h4>
 
 <?php if (!empty($success_message)): ?>
@@ -97,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="field">
 	<label class="label">Descripción</label>
 	<div class="control">
-		<input class="input" type="text" name="txt_descripcion" 
+		<input class="input <?= isset($errors['descripcion']) ? 'is-danger' : ''; ?>" type="text" name="txt_descripcion" 
 			value="<?= htmlspecialchars($descripcion) ?>">
 		<?php if (!empty($errors['descripcion'])): ?>
 			<p class="help is-danger"><?php echo $errors['descripcion']; ?></p>
@@ -107,7 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="field">
 	<label class="label">Nombre de Usuario</label>
-	<input class="input" type="text" name="txt_usuario" value="<?= htmlspecialchars($usuario) ?>">
+	<input class="input <?= isset($errors['usuario']) ? 'is-danger' : ''; ?>" type="text" name="txt_usuario"  
+	value="<?= htmlspecialchars($usuario) ?>">
 	<?php if (!empty($errors['usuario'])): ?>
 		<p class="help is-danger"><?php echo $errors['usuario']; ?></p>
 	<?php endif; ?>		
@@ -115,11 +124,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="field">
 	<label class="label">Password</label>
-	<input class="input" type="password" name="txt_password">
+	<input class="input <?= isset($errors['password']) ? 'is-danger' : ''; ?>" type="password" name="txt_password">
 	<?php if (!empty($errors['password'])): ?>
 		<p class="help is-danger"><?php echo $errors['password']; ?></p>
-	<?php endif; ?>		
+	<?php endif; ?>
 </div>
+
+<article class="message is-info is-small">
+  <div class="message-body content">
+  	<strong>La contraseña debe tener:</strong>
+  	<ul>
+  		<li>Más de seis caracteres</li>
+  		<li>Al menos un dígito</li>
+  		<li>Al menos una minúscula y al menos una mayúscula</li>
+  		<li>NO puede tener otros símbolos</li>
+  	</ul>
+  </div>
+</article>
 
 <input type="hidden" name="txt_csrf" value="<?= htmlspecialchars($_SESSION['token_csrf']); ?>">
 
@@ -130,5 +151,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </div>
 
 </form>
+
+    </div>
+      <div class="column is-6"> </div>
+  </div>
 
 <?php include_once 'templates/footer.php'; ?>

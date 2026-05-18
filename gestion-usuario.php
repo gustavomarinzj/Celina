@@ -23,6 +23,9 @@ try {
 }
 
 ?>
+  <div class="columns">
+    <div class="column is-9">
+
 <h4 class="title is-4">Gestión de Usuarios</h4>
 
 <?php if (isset($error_message)): ?>
@@ -50,7 +53,9 @@ try {
 					<td><?= htmlspecialchars($usuario['rol']); ?></td>
 					<td>
 						<a href="actualizar-usuario.php?id=<?= $usuario['id']; ?>" class="button is-success"><button>Actualizar</button></a>
-						<a href="borrar-usuario.php?id=<?= $usuario['id']; ?>" class="button is-danger"><button>Borrar</button></a>
+						<?php if ($_SESSION['username'] != htmlspecialchars($usuario['username'])): ?>
+							<a href="borrar-usuario.php?id=<?= $usuario['id']; ?>" class="button is-danger"><button>Borrar</button></a>
+						<?php endif; ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>
@@ -58,5 +63,9 @@ try {
 	</table>
 </div>
 <?php endif; ?>
+
+    </div>
+      <div class="column is-3"> </div>
+  </div>
 
 <?php include_once 'templates/footer.php'; ?>

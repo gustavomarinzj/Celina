@@ -8,5 +8,14 @@ if (!isset($_SESSION['logged_in'])) {
 
 include_once 'templates/header.php' 
 ?>
+  <div class="columns">
+    <div class="column is-6">
+
+
+
+      
+    </div>
+      <div class="column is-6"> </div>
+  </div>
 
 <?php include_once 'templates/footer.php'; ?>
