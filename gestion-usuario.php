@@ -13,7 +13,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 try {
-  $query = "SELECT id, descripcion, username, rol FROM usuario ORDER BY id ASC";
+  $query = "SELECT id, descripcion, username FROM usuario ORDER BY id ASC";
   $stmt = $db->prepare($query);
   $stmt->execute();
   $usuarios = $stmt->fetchAll();  
@@ -23,7 +23,6 @@ try {
 }
 
 ?>
-  <div class="columns">
     <div class="column is-9">
 
 <h4 class="title is-4">Gestión de Usuarios</h4>
@@ -40,7 +39,6 @@ try {
 				<th>#</th>
 				<th>Descripción</th>
 				<th>Usuario</th>
-				<th>Rol</th>
 				<th>Acciones</th>
 			</tr>
 		</thead>
@@ -50,7 +48,6 @@ try {
 					<td><?= htmlspecialchars($usuario['id']); ?></td>
 					<td><?= htmlspecialchars($usuario['descripcion']); ?></td>
 					<td><?= htmlspecialchars($usuario['username']); ?></td>
-					<td><?= htmlspecialchars($usuario['rol']); ?></td>
 					<td>
 						<a href="actualizar-usuario.php?id=<?= $usuario['id']; ?>" class="button is-success"><button>Actualizar</button></a>
 						<?php if ($_SESSION['username'] != htmlspecialchars($usuario['username'])): ?>
@@ -65,7 +62,6 @@ try {
 <?php endif; ?>
 
     </div>
-      <div class="column is-3"> </div>
-  </div>
+      <div class="column is-3"></div>
 
 <?php include_once 'templates/footer.php'; ?>

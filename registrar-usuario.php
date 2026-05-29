@@ -22,10 +22,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!hash_equals($_SESSION['token_csrf'], $_POST['txt_csrf'])) {
     // CSRF attack detected! Log this, redirect, or show an error.
 			echo '<div class="notification is-warning">
-			  El <strong>token CSRF</strong> es invalido. Por favor intente reenviar el formulario.
+			  El <strong>token CSRF</strong> es invalido. Por favor intente más tarde.
 			</div>';
 
-    exit();		
+    exit();
 	}
 
 	$descripcion = trim($_POST['txt_descripcion']);
@@ -59,8 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           if ($check_stmt->rowCount() > 0) {
               $errors['usuario'] = 'Ya este usuario existe';
           }
-      } catch(PDOException $exception) {
-          $errors['database'] = 'Database error: ' . $exception->getMessage();
+      } catch(PDOException $e) {
+          $errors['database'] = 'Database error: ' . $e->getMessage();
       }
   }  
   // Si no hay errores insert en la bd
@@ -79,15 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	          $descripcion = $usuario = $password = $pwd_hashed = '';
 	          regenerar_token_csrf();
 	      }
-	  } catch(PDOException $exception) {
-	      $errors['database'] = 'Se produjo un error: ' . $exception->getMessage();
+	  } catch(PDOException $e) {
+	      $errors['database'] = 'Se produjo un error: ' . $e->getMessage();
 	  }
   }	  
 }
 
 ?>
-
-  <div class="columns">
     <div class="column is-6">
 
 <h4 class="title is-4">Nuevo Usuario</h4>
@@ -153,7 +151,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </form>
 
     </div>
-      <div class="column is-6"> </div>
-  </div>
+      <div class="column is-6"></div>
 
 <?php include_once 'templates/footer.php'; ?>
