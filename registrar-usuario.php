@@ -1,7 +1,7 @@
 <?php
 session_start();
 // If the user is not logged in, redirect to the login page
-if (!isset($_SESSION['logged_in'])) {
+if (! isset($_SESSION['logged_in'])) {
   header('Location: index.php');
   exit;
 }
@@ -19,111 +19,119 @@ $errors = [];
 $success_message = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	if (!hash_equals($_SESSION['token_csrf'], $_POST['txt_csrf'])) {
+  if (! hash_equals($_SESSION['token_csrf'], $_POST['txt_csrf'])) {
     // CSRF attack detected! Log this, redirect, or show an error.
-			echo '<div class="notification is-warning">
-			  El <strong>token CSRF</strong> es invalido. Por favor intente más tarde.
-			</div>';
-
+    echo '<div class="notification is-warning">
+    El <strong>token CSRF</strong> es invalido. Por favor intente más tarde.</div>';
+    include_once 'templates/footer.php';
     exit();
-	}
+  }
 
-	$descripcion = trim($_POST['txt_descripcion']);
-	$usuario = trim($_POST['txt_usuario']);
-	$password = trim($_POST['txt_password']);
+  $descripcion = trim($_POST['txt_descripcion']);
+  $usuario = trim($_POST['txt_usuario']);
+  $password = trim($_POST['txt_password']);
 
-  // Validar
+    // Validar
   if (empty($descripcion)) {
-      $errors['descripcion'] = 'Campo requerido';
+    $errors['descripcion'] = 'Campo requerido';
   }
   if (empty($usuario)) {
-      $errors['usuario'] = 'Campo requerido';
+    $errors['usuario'] = 'Campo requerido';
   }
   if (empty($password)) {
-      $errors['password'] = 'Campo requerido';
-  } elseif (!preg_match('/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,}$/', $password)) {
-  	$errors['password'] = 'Password no cumple con el formato';
+    $errors['password'] = 'Campo requerido';
+  } elseif (! preg_match('/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{6,}$/', $password)) {
+    $errors['password'] = 'Password no cumple con el formato';
   }
 
-	// Crea una clave de hash para una contraseña
-	$pwd_hashed = password_hash($password, PASSWORD_DEFAULT);
+  // Crea una clave de hash para una contraseña
+  $pwd_hashed = password_hash($password, PASSWORD_DEFAULT);
 
   // Buscar si ya existe usuario
   if (empty($errors['usuario'])) {
-      try {
-          $check_query = "SELECT id FROM usuario WHERE username = :usuario";
-          $check_stmt = $db->prepare($check_query);
-          $check_stmt->bindParam(':usuario', $usuario);
-          $check_stmt->execute();
+    try {
+      $check_query = "SELECT id FROM usuario WHERE username = :usuario";
+      $check_stmt  = $db->prepare($check_query);
+      $check_stmt->bindParam(':usuario', $usuario);
+      $check_stmt->execute();
 
-          if ($check_stmt->rowCount() > 0) {
-              $errors['usuario'] = 'Ya este usuario existe';
-          }
-      } catch(PDOException $e) {
-          $errors['database'] = 'Database error: ' . $e->getMessage();
+      if ($check_stmt->rowCount() > 0) {
+        $errors['usuario'] = 'Ya este usuario existe';
       }
-  }  
+    } catch (PDOException $e) {
+      $errors['database'] = 'Database error: ' . $e->getMessage();
+    }
+  }
   // Si no hay errores insert en la bd
   if (empty($errors)) {
-	  try {
-	      $query = "INSERT INTO usuario (descripcion, username, password) 
-	               VALUES (:descripcion, :usuario, :password)";
+    try {
+      $query = "INSERT INTO usuario (descripcion, username, password)
+      VALUES (:descripcion, :usuario, :password)";
 
-	      $stmt = $db->prepare($query);
-	      $stmt->bindParam(':descripcion', $descripcion);
-	      $stmt->bindParam(':usuario', $usuario);
-	      $stmt->bindParam(':password', $pwd_hashed);
+      $stmt = $db->prepare($query);
+      $stmt->bindParam(':descripcion', $descripcion);
+      $stmt->bindParam(':usuario', $usuario);
+      $stmt->bindParam(':password', $pwd_hashed);
 
-	      if ($stmt->execute()) {
-	          $success_message = '¡Registro exitoso!';
-	          $descripcion = $usuario = $password = $pwd_hashed = '';
-	          regenerar_token_csrf();
-	      }
-	  } catch(PDOException $e) {
-	      $errors['database'] = 'Se produjo un error: ' . $e->getMessage();
-	  }
-  }	  
+      if ($stmt->execute()) {
+        $success_message = '¡Registro exitoso!';
+        $descripcion = $usuario = $password = $pwd_hashed = '';
+        regenerar_token_csrf();
+      }
+    } catch (PDOException $e) {
+      $errors['database'] = 'Se produjo un error: ' . $e->getMessage();
+    }
+  }
 }
 
 ?>
-    <div class="column is-6">
+<div class="column is-6">
 
-<h4 class="title is-4">Nuevo Usuario</h4>
+  <h4 class="title is-4">Nuevo Usuario</h4>
 
-<?php if (!empty($success_message)): ?>
-	<p class="has-text-success"><?php echo $success_message; ?></p>
-<?php endif; ?>
+  <?php if (! empty($success_message)): ?>
+    <div class="message is-success">
+      <div class="message-body">
+        <?php echo $success_message; ?>
+      </div>
+    </div>
+    <!-- <p class="has-text-success"></p> -->
+  <?php endif; ?>
 
-<?php if (!empty($errors['database'])): ?>
-  <p class="has-text-danger"><?php echo $errors['database']; ?></p>
-<?php endif; ?>
+  <?php if (! empty($errors['database'])): ?>
+    <div class="message is-danger">
+      <div class="message-body">
+        <?php echo $errors['database']; ?>
+      </div>
+    </div>
+  <?php endif; ?>
 
-<form method="POST" action="">
+  <form method="POST" action="">
 
-<div class="field">
-	<label class="label">Descripción</label>
-	<div class="control">
-		<input class="input <?= isset($errors['descripcion']) ? 'is-danger' : ''; ?>" type="text" name="txt_descripcion" 
-			value="<?= htmlspecialchars($descripcion) ?>">
-		<?php if (!empty($errors['descripcion'])): ?>
-			<p class="help is-danger"><?php echo $errors['descripcion']; ?></p>
-		<?php endif; ?>		
-	</div>
-</div>
+    <div class="field">
+     <label class="label">Descripción</label>
+     <div class="control">
+      <input class="input <?php echo isset($errors['descripcion']) ? 'is-danger' : ''; ?>" type="text" name="txt_descripcion"
+      value="<?php echo htmlspecialchars($descripcion) ?>">
+      <?php if (! empty($errors['descripcion'])): ?>
+       <p class="help is-danger"><?php echo $errors['descripcion']; ?></p>
+     <?php endif; ?>
+   </div>
+ </div>
 
-<div class="field">
-	<label class="label">Nombre de Usuario</label>
-	<input class="input <?= isset($errors['usuario']) ? 'is-danger' : ''; ?>" type="text" name="txt_usuario"  
-	value="<?= htmlspecialchars($usuario) ?>">
-	<?php if (!empty($errors['usuario'])): ?>
-		<p class="help is-danger"><?php echo $errors['usuario']; ?></p>
-	<?php endif; ?>		
+ <div class="field">
+   <label class="label">Nombre de Usuario</label>
+   <input class="input <?php echo isset($errors['usuario']) ? 'is-danger' : ''; ?>" type="text" name="txt_usuario"
+   value="<?php echo htmlspecialchars($usuario) ?>">
+   <?php if (! empty($errors['usuario'])): ?>
+    <p class="help is-danger"><?php echo $errors['usuario']; ?></p>
+  <?php endif; ?>
 </div>
 
 <div class="field">
 	<label class="label">Password</label>
-	<input class="input <?= isset($errors['password']) ? 'is-danger' : ''; ?>" type="password" name="txt_password">
-	<?php if (!empty($errors['password'])): ?>
+	<input class="input <?php echo isset($errors['password']) ? 'is-danger' : ''; ?>" type="password" name="txt_password">
+	<?php if (! empty($errors['password'])): ?>
 		<p class="help is-danger"><?php echo $errors['password']; ?></p>
 	<?php endif; ?>
 </div>
@@ -140,17 +148,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </div>
 </article>
 
-<input type="hidden" name="txt_csrf" value="<?= htmlspecialchars($_SESSION['token_csrf']); ?>">
+<input type="hidden" name="txt_csrf" value="<?php echo htmlspecialchars($_SESSION['token_csrf']); ?>">
 
 <div class="field">
 	<div class="control">
-		<button class="button is-link" type="submmit" name="btn_enviar">Enviar</button>
+		<button class="button is-link" type="submit" name="btn_enviar">Enviar</button>
 	</div>
 </div>
 
 </form>
 
-    </div>
-      <div class="column is-6"></div>
+</div>
+<div class="column is-6"></div>
 
 <?php include_once 'templates/footer.php'; ?>

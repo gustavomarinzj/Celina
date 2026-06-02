@@ -2,9 +2,9 @@
 session_start();
 
 if (isset($_SESSION['logged_in'])) {
-    header('Location: home.php');
-    exit;
-  }
+  header('Location: home.php');
+  exit;
+}
 
 include_once 'templates/iheader.php';
 include_once 'config/database.php';
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   <div class="field">
     <div class="control">
-      <button class="button is-block is-fullwidth is-link" type="submmit" name="btn_enviar">Enviar</button>
+      <button class="button is-block is-fullwidth is-link" type="submit" name="btn_enviar">Enviar</button>
     </div>
   </div>
 
