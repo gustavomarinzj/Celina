@@ -21,8 +21,10 @@ $success_message = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (! hash_equals($_SESSION['token_csrf'], $_POST['txt_csrf'])) {
     // CSRF attack detected! Log this, redirect, or show an error.
-    echo '<div class="notification is-warning">
-    El <strong>token CSRF</strong> es invalido. Por favor intente más tarde.</div>';
+    echo '<div class="column is-6">
+          <div class="notification is-warning">
+            El <strong>token CSRF</strong> es invalido. Por favor intente más tarde.
+          </div>';
     include_once 'templates/footer.php';
     exit();
   }
@@ -87,15 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="column is-6">
 
-  <h4 class="title is-4">Nuevo Usuario</h4>
+  <h4 class="title is-4">Registrar Usuario</h4>
 
   <?php if (! empty($success_message)): ?>
-    <div class="message is-success">
-      <div class="message-body">
+    <div class="notification is-success">
         <?php echo $success_message; ?>
-      </div>
     </div>
-    <!-- <p class="has-text-success"></p> -->
   <?php endif; ?>
 
   <?php if (! empty($errors['database'])): ?>
@@ -152,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="field">
 	<div class="control">
-		<button class="button is-link" type="submit" name="btn_enviar">Enviar</button>
+		<button class="button is-link is-pulled-right" type="submit" name="btn_enviar">Enviar</button>
 	</div>
 </div>
 

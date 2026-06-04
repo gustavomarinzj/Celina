@@ -17,7 +17,10 @@ $db = $database->getConnection();
 $id_usuario = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
 if ($id_usuario <= 0) {
-  echo '<div class="notification is-warning">El <strong>Usuario</strong> no es válido.</div>';
+  echo '<div class="column is-6">
+        <div class="notification is-warning">
+          El <strong>Usuario</strong> no es válido.
+        </div>';
   include_once 'templates/footer.php';
   exit;
 }
@@ -29,7 +32,10 @@ try {
   $stmt->execute();
 
   if ($stmt->rowCount() == 0) {
-    echo '<div class="notification is-warning">El <strong>Usuario</strong> no existe.</div>';
+    echo '<div class="column is-6">
+          <div class="notification is-warning">
+            El <strong>Usuario</strong> no existe.
+          </div>';
     include_once 'templates/footer.php';
     exit;
   } else {
@@ -40,9 +46,7 @@ try {
   }
 
 } catch (PDOException $e) {
-  echo '<div class="notification is-danger">Error: ' . $e->getMessage() . '</div>';
-  include_once 'includes/footer.php';
-  exit;
+    $errors['database'] = 'Se produjo un error: ' . $e->getMessage();
 }
 
 // Inicializar las variables
@@ -53,8 +57,10 @@ $success_message = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (! hash_equals($_SESSION['token_csrf'], $_POST['txt_csrf'])) {
     // CSRF attack detected! Log this, redirect, or show an error.
-    echo '<div class="notification is-warning">
-    El <strong>token CSRF</strong> es invalido. Por favor intente más tarde.</div>';
+    echo '<div class="column is-6">
+          <div class="notification is-danger">
+            El <strong>token CSRF</strong> es invalido. Por favor intente más tarde.
+          </div>';
     include_once 'templates/footer.php';
     exit();
   }
@@ -102,18 +108,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <h6 class="subtitle is-6">Cambiar password</h6>
 
   <?php if (! empty($success_message)): ?>
-    <div class="message is-success">
-      <div class="message-body">
-        <?php echo $success_message; ?>
-      </div>
+    <div class="notification is-success">
+      <?php echo $success_message; ?>
     </div>
   <?php endif; ?>
 
   <?php if (! empty($errors['database'])): ?>
-    <div class="message is-danger">
-      <div class="message-body">
-        <?php echo $errors['database']; ?>
-      </div>
+    <div class="notification is-danger">
+      <?php echo $errors['database']; ?>
     </div>
   <?php endif; ?>
 
@@ -157,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class="field">
 	<div class="control">
-		<button class="button is-link" type="submit" name="btn_enviar">Enviar</button>
+		<button class="button is-link is-pulled-right" type="submit" name="btn_enviar">Enviar</button>
 	</div>
 </div>
 
